@@ -1,27 +1,24 @@
 class Player {
     constructor(props) {
-        console.log(props);
         this.container = document.createElement('div');
         this.container.className = 'player-container';
 
-        this.userName = document.createElement('h3');
-        this.userName.className = 'username';
-        this.userName.innerHTML = props.userName;
+        this.playerName = document.createElement('h3');
+        this.playerName.className = 'username';
+        this.playerName.innerHTML = props.playerName;
 
         this.scoreField = document.createElement('span');
         this.scoreField.innerHTML = props.score;
 
-        this.container.appendChild(this.userName);
+        this.container.appendChild(this.playerName);
         this.container.appendChild(this.scoreField);
     }
 
     update(props) {
-        console.log("Player update with", props);
-        const { userName, score } = props;
+        const { playerName, score } = props;
 
-        this.userName.innerHTML = userName;
+        this.playerName.innerHTML = playerName;
         this.scoreField.innerHTML = `score: ${score}`;
-
     }
 }
 

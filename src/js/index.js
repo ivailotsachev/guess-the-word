@@ -8,6 +8,7 @@ import Game from './components/Game';
 const game = new Game();
 game.render();
 
-game.userName = 'new username';
-game.score = '50'
+
+// some tests:
+game.score = 40;
 game.notify();
