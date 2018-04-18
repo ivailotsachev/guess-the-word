@@ -1,56 +1,34 @@
 import Game from './Game';
 import Player from './Player';
-import WelcomeScreen from './WelcomeScreen';
+import Home from './Home';
 import randomWords from 'random-words';
 import Result from './Result';
 
 class App {
-    constructor() {
+    constructor(props) {
+        console.log(props);
+
         // Create game container
         this.container = document.createElement('section');
         this.container.className = 'app-container';
 
-        this.welcomeScreen = new WelcomeScreen();
-        this.container.appendChild(this.welcomeScreen.container);
+        const home = new Home(props);
+        this.container.appendChild(home.container);
 
-        this.generateWord();
-        this.playerName = this.setPlayer();
-        this.score = 0;
-        this.countDown = 5;
-        this.timer = 5;
-        this.observers = [];
+        // attach all event listeners 
+        this.attachListenter();
+    }
 
+    attachListenter() {
+        const startBtn = this.container.querySelector('.start-btn');
 
-        // create player
-        const player = new Player({
-            playerName: this.playerName,
-            score: this.score
-        });
+        startBtn.addEventListener('click', () => {
+            this.notify();
+        })
+    }
 
-        // add player to observers
-        this.addObserver(player);
+    coundDownPopUp() {
 
-        // append all components to game container
-        this.container.appendChild(player.container);
-
-        // create game
-        this.game = new Game({
-            score: this.score,
-            wordToShow: this.wordToShow,
-            timer: this.timer
-        });
-
-        // add game to observers
-        this.addObserver(this.game);
-
-        // create result
-        this.result = new Result({score: this.score});
-        this.addObserver(this.result);
-
-        this.container.appendChild(this.game.container);
-        this.container.appendChild(this.result.container);
-
-        this.startGame();
     }
 
     generateWord() {
@@ -71,7 +49,7 @@ class App {
         }
 
         return input.join("");
-    } 
+    }
 
     startGame() {
         // start countdown to zero
@@ -79,10 +57,10 @@ class App {
         const time = setInterval(() => {
             this.timer--;
             this.notify();
-
+            console.error(this.timer);
             if (this.timer === 0) {
                 clearInterval(time);
-                this.showResult();
+                // this.showResult();
             }
         }, 1000);
 
@@ -107,17 +85,6 @@ class App {
         })
     }
 
-    resetGame() {
-        // back timer to 40;
-        this.timer = 40;
-        // generate new word;
-        this.generateWord();
-        // notify abservers
-        this.notify();
-        // start the game
-        this.startGame();
-    }
-
     showResult() {
         this.result.container.classList.toggle('show');
         const playAgainBtn = this.container.querySelector('.play-again-btn');
@@ -131,19 +98,24 @@ class App {
 
     }
 
-    setPlayer() {
+    handlePlayerLogin() {
         const currentUser = localStorage.getItem('user');
-        const userInput = this.container.querySelector('.welcome-screen input');
-        
-        if (currentUser) return currentUser;
+        console.log("User", currentUser);
 
-        userInput.addEventListener('keyup', (e) => {
+        const userNameInput = this.container.querySelector('.username');
+
+        if (currentUser) {
+            this.showGameActions();
+            return currentUser
+        };
+
+        userNameInput.addEventListener('keyup', (e) => {
             const username = e.target.value;
-            
+
             if (e.keyCode === 13 && username.length) {
                 this.playerName = username;
-                userInput.value = '';
-                this.welcomeScreen.container.classList.add('hidden');
+                userNameInput.value = '';
+                this.home.container.classList.add('hidden');
                 this.notify();
 
                 localStorage.setItem('user', username);

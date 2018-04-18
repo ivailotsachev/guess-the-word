@@ -1,6 +1,7 @@
 class Game {
     constructor(props) {
         console.log("Game", props);
+
         this.container = document.createElement('div');
         this.container.className = 'game-container';
 

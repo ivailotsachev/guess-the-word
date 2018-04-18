@@ -15,6 +15,7 @@ class Result {
     }
 
     update(props) {
+        console.warn("RESULT UPADATE", props);
         this.userScore.innerHTML = `Your Score: ${props.score}`;
     }
 }

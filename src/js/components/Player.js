@@ -1,5 +1,6 @@
 class Player {
     constructor(props) {
+        console.log("Player props", props);
 
         this.container = document.createElement('div');
         this.container.className = 'player-container';
