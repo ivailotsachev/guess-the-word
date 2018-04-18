@@ -6,25 +6,65 @@ import Result from './Result';
 
 class App {
     constructor(props) {
-        console.log(props);
+        this.props = { ...props };
+        this.observers = [];
 
         // Create game container
         this.container = document.createElement('section');
         this.container.className = 'app-container';
 
-        const home = new Home(props);
+        const home = new Home(this.props);
+        const player = new Player(this.props);
+        const game = new Game(this.props);
+        const result = new Result(this.props);
+
         this.container.appendChild(home.container);
+        this.container.appendChild(game.container);
+        this.container.appendChild(player.container);
+        this.container.appendChild(result.container);
+
+        this.addObserver(home);
+        this.addObserver(player);
+        this.addObserver(game);
+        this.addObserver(result);
+
+        // append all components to game container
+        this.container.appendChild(player.container);
+        this.container.appendChild(game.container);
+        this.container.appendChild(result.container);
 
         // attach all event listeners 
         this.attachListenter();
     }
 
     attachListenter() {
-        const startBtn = this.container.querySelector('.start-btn');
+        this._logUser();
+    }
 
-        startBtn.addEventListener('click', () => {
+    _logUser() {
+        const username = localStorage.getItem('user');
+
+        if (username) {
+            this.props.showGameActions = true;
+            this.props.isPlayerLoggedIn = true;
+            this.props.username = username;
             this.notify();
-        })
+        } else {
+            const userNameInput = this.container.querySelector('.username');
+
+            userNameInput.addEventListener('keyup', (e) => {
+                const username = e.target.value;
+
+                if (e.keyCode === 13 && username.length) {
+                    this.props.username = username;
+                    this.props.isPlayerLoggedIn = true;
+                    this.notify();
+
+                    localStorage.setItem('user', username)
+                }
+            })
+
+        }
     }
 
     coundDownPopUp() {
@@ -85,44 +125,6 @@ class App {
         })
     }
 
-    showResult() {
-        this.result.container.classList.toggle('show');
-        const playAgainBtn = this.container.querySelector('.play-again-btn');
-
-        // attack click event to play again button
-        playAgainBtn.addEventListener('click', () => {
-            this.resetGame();
-            // hide result container
-            this.result.container.classList.toggle('show');
-        })
-
-    }
-
-    handlePlayerLogin() {
-        const currentUser = localStorage.getItem('user');
-        console.log("User", currentUser);
-
-        const userNameInput = this.container.querySelector('.username');
-
-        if (currentUser) {
-            this.showGameActions();
-            return currentUser
-        };
-
-        userNameInput.addEventListener('keyup', (e) => {
-            const username = e.target.value;
-
-            if (e.keyCode === 13 && username.length) {
-                this.playerName = username;
-                userNameInput.value = '';
-                this.home.container.classList.add('hidden');
-                this.notify();
-
-                localStorage.setItem('user', username);
-            }
-        })
-    }
-
     notify() {
         this.observers.forEach(obs => obs.update(this));
     }
@@ -130,7 +132,6 @@ class App {
     addObserver(observer) {
         this.observers.push(observer);
     }
-
 }
 
 export default App;

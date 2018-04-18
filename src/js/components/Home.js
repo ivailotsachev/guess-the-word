@@ -1,6 +1,6 @@
 class Home {
     constructor(props) {
-        console.log("Home props", props);
+        // console.log("Home props", props);
 
         this.container = document.createElement('div');
         this.container.className = 'home-screen';
@@ -28,10 +28,18 @@ class Home {
 
     }
 
-    update(props) {
-        console.log('Home Update', props);
+    update(data) {
+        console.warn('Home Update', data.props);
+        const { isPlayerLoggedIn } = data.props;
+
+        if (isPlayerLoggedIn) {
+            this.userNameInput.classList.add('hide');
+            this.message.innerHTML = '';
+            this.startBtn.classList.add('show');
+        }
 
         // if user hide user input and show start button
+
     }
 }
 

@@ -1,20 +1,24 @@
 import '../styles/styles.scss';
-
-/*
-    Import components
- */
+/* Import components */
 import App from './components/App';
 
+/* set intial game state */
 const initialGameState = {
     score: 0,
-    username: null,
-    showGameActions: false,
+    username: '',
     timer: 40,
-    isPlayerLoggeIn: false,
-    gameEnabled: false
+    isPlayerLoggedIn: false,
+    gameEnabled: false,
+    showResult: false,
+    playAgain: false
 }
 
 const app = new App({ ...initialGameState });
 const root = document.getElementById('root');
+
+// TODO: this is test -- delete
+
+app.score = 40;
+app.notify();
 
 root.appendChild(app.container);

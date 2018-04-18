@@ -1,16 +1,16 @@
 class Game {
     constructor(props) {
-        console.log("Game", props);
+        // console.log("Game", props);
 
         this.container = document.createElement('div');
         this.container.className = 'game-container';
 
         this.wordField = document.createElement('h2');
         this.wordField.className = 'word-to-match';
-        this.wordField.innerHTML = props.wordToShow;
+        this.wordField.innerHTML = 'props.wordToShow';
 
         this.timeField = document.createElement('h4');
-        this.timeField.innerHTML = `Time left: ${props.timer}`
+        this.timeField.innerHTML = 'time left'
 
         this.userAnswer = document.createElement('input');
         this.userAnswer.className = 'user-answer';
@@ -25,8 +25,9 @@ class Game {
     }
 
     update(props) {
-        this.timeField.innerHTML = `Time Left: ${props.timer}`
-        this.wordField.innerHTML = props.wordToShow;
+        // console.warn('Game Update', props);
+        this.timeField.innerHTML = `Time Left: timer`
+        this.wordField.innerHTML = 'word to show'
     }
 }
 

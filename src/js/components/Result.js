@@ -1,6 +1,6 @@
 class Result {
-    constructor(props) {
-        console.warn("Result", props);
+    constructor(data) {
+        // console.log("Result", data);
         this.container = document.createElement('div');
         this.container.className = 'result-container';
 
@@ -14,9 +14,9 @@ class Result {
         this.container.appendChild(this.playAgainBtn);
     }
 
-    update(props) {
-        console.warn("RESULT UPADATE", props);
-        this.userScore.innerHTML = `Your Score: ${props.score}`;
+    update(data) {
+        // console.warn("RESULT UPADATE", data);
+        // this.userScore.innerHTML = `Your Score: ${props.score}`;
     }
 }
 

@@ -1,0 +1,16 @@
+.home-screen {
+    .username {
+        border: 1px solid red;
+        &.hide {
+            display: none;
+        }
+    }
+    .start-btn {
+        display: none;
+    }
+    .start-btn {
+        &.show {
+            display: block;
+        }
+    }
+}
