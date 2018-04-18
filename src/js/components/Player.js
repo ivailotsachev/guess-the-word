@@ -1,5 +1,6 @@
 class Player {
     constructor(props) {
+
         this.container = document.createElement('div');
         this.container.className = 'player-container';
 
@@ -19,6 +20,10 @@ class Player {
 
         this.playerName.innerHTML = playerName;
         this.scoreField.innerHTML = `score: ${score}`;
+    }
+
+    startGame() {
+        console.log('game start');
     }
 }
 

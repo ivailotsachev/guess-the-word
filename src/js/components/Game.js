@@ -1,65 +1,31 @@
-import Player from './Player';
-import WelcomeScreen from './WelcomeScreen';
-
 class Game {
-    constructor() {
-        // Create game container
-        this.container = document.createElement('section');
+    constructor(props) {
+        console.log("Game", props);
+        this.container = document.createElement('div');
         this.container.className = 'game-container';
 
-        this.welcomeScreen = new WelcomeScreen();
-        this.container.appendChild(this.welcomeScreen.container);
+        this.wordField = document.createElement('h2');
+        this.wordField.innerHTML = props.wordToMatch;
 
-        this.playerName = this.setPlayer();
-        this.score = 0;
-        this.wordToMatch = 'word'
-        this.observers = [];
+        this.timeField = document.createElement('h4');
+        this.timeField.innerHTML = `Time left: ${props.timer}`
 
+        this.userAnswer = document.createElement('input');
+        this.userAnswer.className = 'user-answer';
 
-        // create player
-        const player = new Player({playerName: this.playerName, score: this.score});
-        this.addObserver(player);
+        this.hint = document.createElement('p');
+        this.hint.innerHTML = 'Enter you suggestion and hit enter';
 
-        // append all components to game container
-        this.container.appendChild(player.container);
-
-        this.notify();
+        this.container.appendChild(this.timeField);
+        this.container.appendChild(this.wordField);
+        this.container.appendChild(this.userAnswer);
+        this.container.appendChild(this.hint);
     }
 
-    setPlayer() {
-
-        const currentUser = localStorage.getItem('user');
-        const userInput = this.container.querySelector('.welcome-screen input');
-        
-        if (currentUser) return currentUser;
-
-        userInput.addEventListener('keyup', (e) => {
-            const username = e.target.value;
-            
-            if (e.keyCode === 13 && username.length) {
-                this.playerName = username;
-                userInput.value = '';
-                this.welcomeScreen.container.classList.add('hidden');
-                this.notify();
-
-                localStorage.setItem('user', username);
-            }
-        })
+    update(props) {
+        this.timeField.innerHTML = `Time Left: ${props.timer}`
+        this.wordField.innerHTML = props.wordToMatch;
     }
-
-    notify() {
-        this.observers.forEach(obs => obs.update(this));
-    }
-
-    addObserver(observer) {
-        this.observers.push(observer);
-    }
-
-    render() {
-        const root = document.getElementById('root');
-        root.appendChild(this.container);
-    }
-
 }
 
 export default Game;

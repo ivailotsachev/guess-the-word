@@ -3,12 +3,9 @@ import '../styles/styles.scss';
 /*
     Import components
  */
-import Game from './components/Game';
+import App from './components/App';
 
-const game = new Game();
-game.render();
+const app = new App();
+const root = document.getElementById('root');
 
-
-// some tests:
-game.score = 40;
-game.notify();
+root.appendChild(app.container);
