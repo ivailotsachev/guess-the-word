@@ -1,6 +1,7 @@
 import Game from './Game';
 import Player from './Player';
 import WelcomeScreen from './WelcomeScreen';
+import randomWords from 'random-words';
 
 class App {
     constructor() {
@@ -11,45 +12,69 @@ class App {
         this.welcomeScreen = new WelcomeScreen();
         this.container.appendChild(this.welcomeScreen.container);
 
+        this.generateWord();
         this.playerName = this.setPlayer();
         this.score = 0;
-        this.wordToMatch = this.generateWord();
         this.countDown = 5;
-        this.timer = 40;
+        this.timer = 5;
         this.observers = [];
 
 
         // create player
-        const player = new Player({playerName: this.playerName, score: this.score});
+        const player = new Player({
+            playerName: this.playerName,
+            score: this.score
+        });
+
+        // add player to observers
         this.addObserver(player);
 
         // append all components to game container
         this.container.appendChild(player.container);
 
+        // create game
         this.game = new Game({
             score: this.score,
-            wordToMatch: this.wordToMatch,
+            wordToShow: this.wordToShow,
             timer: this.timer
         });
 
+        // add game to observers
         this.addObserver(this.game);
-        this.container.appendChild(this.game.container);
-        this.notify();
 
+        this.container.appendChild(this.game.container);
         this.startGame();
     }
 
     generateWord() {
-        return 'word'
+        const word = randomWords();
+        this.wordToMatch = word;
+        this.wordToShow = this.scrambleWord(word);
     }
 
+    scrambleWord(word) {
+        const input = word.split("");
+        const n = input.length;
+
+        for (let i = n - 1; i > 0; i--) {
+            let j = Math.floor(Math.random() * (i + 1));
+            let tmp = input[i];
+            input[i] = input[j];
+            input[j] = tmp;
+        }
+
+        return input.join("");
+    } 
+
     startGame() {
+        // start countdown to zero
         const time = setInterval(() => {
             this.timer--;
             this.notify();
 
             if (this.timer === 0) {
                 clearInterval(time);
+                this.showResult();
             }
 
         }, 1000);
@@ -58,15 +83,26 @@ class App {
 
         userAnswer.addEventListener('keyup', (e) => {
             const answer = e.target.value;
+            // check if there is user input and user hit the enter key
             if (this.timer >= 0 && e.keyCode === 13) {
                 userAnswer.value = '';
-                
+
+                // check if there is a match and notify observers
                 if (answer === this.wordToMatch) {
                     this.score += 5;
+                    this.generateWord();
                     this.notify();
                 }
             }
         })
+    }
+
+    resetGame() {
+        this.timer = 5;
+        this.startGame();
+    }
+    showResult() {
+        console.error('show result');
     }
 
     setPlayer() {

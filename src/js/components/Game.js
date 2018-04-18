@@ -5,7 +5,7 @@ class Game {
         this.container.className = 'game-container';
 
         this.wordField = document.createElement('h2');
-        this.wordField.innerHTML = props.wordToMatch;
+        this.wordField.innerHTML = props.wordToShow;
 
         this.timeField = document.createElement('h4');
         this.timeField.innerHTML = `Time left: ${props.timer}`
@@ -24,7 +24,7 @@ class Game {
 
     update(props) {
         this.timeField.innerHTML = `Time Left: ${props.timer}`
-        this.wordField.innerHTML = props.wordToMatch;
+        this.wordField.innerHTML = props.wordToShow;
     }
 }
 
