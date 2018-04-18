@@ -2,6 +2,7 @@ import Game from './Game';
 import Player from './Player';
 import WelcomeScreen from './WelcomeScreen';
 import randomWords from 'random-words';
+import Result from './Result';
 
 class App {
     constructor() {
@@ -42,7 +43,13 @@ class App {
         // add game to observers
         this.addObserver(this.game);
 
+        // create result
+        this.result = new Result({score: this.score});
+        this.addObserver(this.result);
+
         this.container.appendChild(this.game.container);
+        this.container.appendChild(this.result.container);
+
         this.startGame();
     }
 
@@ -68,6 +75,7 @@ class App {
 
     startGame() {
         // start countdown to zero
+
         const time = setInterval(() => {
             this.timer--;
             this.notify();
@@ -76,7 +84,6 @@ class App {
                 clearInterval(time);
                 this.showResult();
             }
-
         }, 1000);
 
         const userAnswer = this.container.querySelector('.user-answer');
@@ -89,8 +96,11 @@ class App {
 
                 // check if there is a match and notify observers
                 if (answer === this.wordToMatch) {
+                    // update score
                     this.score += 5;
+                    // generate new word
                     this.generateWord();
+                    // notify observers
                     this.notify();
                 }
             }
@@ -98,11 +108,27 @@ class App {
     }
 
     resetGame() {
-        this.timer = 5;
+        // back timer to 40;
+        this.timer = 40;
+        // generate new word;
+        this.generateWord();
+        // notify abservers
+        this.notify();
+        // start the game
         this.startGame();
     }
+
     showResult() {
-        console.error('show result');
+        this.result.container.classList.toggle('show');
+        const playAgainBtn = this.container.querySelector('.play-again-btn');
+
+        // attack click event to play again button
+        playAgainBtn.addEventListener('click', () => {
+            this.resetGame();
+            // hide result container
+            this.result.container.classList.toggle('show');
+        })
+
     }
 
     setPlayer() {

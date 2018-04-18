@@ -5,6 +5,7 @@ class Game {
         this.container.className = 'game-container';
 
         this.wordField = document.createElement('h2');
+        this.wordField.className = 'word-to-match';
         this.wordField.innerHTML = props.wordToShow;
 
         this.timeField = document.createElement('h4');
