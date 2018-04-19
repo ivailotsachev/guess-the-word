@@ -28,9 +28,9 @@ class Home {
 
     }
 
-    update(data) {
-        console.warn('Home Update', data.props);
-        const { isPlayerLoggedIn } = data.props;
+    update(props) {
+        // console.warn('Home Update', props);
+        const { isPlayerLoggedIn } = props;
 
         if (isPlayerLoggedIn) {
             this.userNameInput.classList.add('hide');

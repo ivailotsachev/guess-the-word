@@ -1,18 +1,16 @@
 class Game {
     constructor(props) {
-        // console.log("Game", props);
-
+        this.name = 'game';
         this.container = document.createElement('div');
         this.container.className = 'game-container';
 
         this.wordField = document.createElement('h2');
         this.wordField.className = 'word-to-match';
-        this.wordField.innerHTML = 'props.wordToShow';
 
         this.timeField = document.createElement('h4');
-        this.timeField.innerHTML = 'time left'
 
         this.userAnswer = document.createElement('input');
+        this.userAnswer.setAttribute('autofocus', true);
         this.userAnswer.className = 'user-answer';
 
         this.hint = document.createElement('p');
@@ -25,9 +23,12 @@ class Game {
     }
 
     update(props) {
-        // console.warn('Game Update', props);
-        this.timeField.innerHTML = `Time Left: timer`
-        this.wordField.innerHTML = 'word to show'
+        console.log('Game Update', props);
+
+        props.gameEnabled && this.container.classList.add('show');
+
+        this.timeField.innerHTML = `Time Left: ${props.timer}`
+        this.wordField.innerHTML = `${props.wordToShow}`
     }
 }
 

@@ -1,8 +1,11 @@
 class Result {
     constructor(data) {
-        // console.log("Result", data);
         this.container = document.createElement('div');
         this.container.className = 'result-container';
+
+        this.greetings = document.createElement('h2');
+        this.greetings.className = 'greetings';
+        this.container.appendChild(this.greetings);
 
         this.userScore = document.createElement('h4');
         this.container.appendChild(this.userScore);
@@ -10,13 +13,13 @@ class Result {
         this.playAgainBtn = document.createElement('button');
         this.playAgainBtn.className = 'play-again-btn';
         this.playAgainBtn.innerHTML = 'Play again';
-
         this.container.appendChild(this.playAgainBtn);
+
     }
 
-    update(data) {
-        // console.warn("RESULT UPADATE", data);
-        // this.userScore.innerHTML = `Your Score: ${props.score}`;
+    update(props) {
+        this.userScore.innerHTML = `Your Score: ${props.score}`;
+        props.showResult ? this.container.classList.add('show') : this.container.classList.remove('show');
     }
 }
 

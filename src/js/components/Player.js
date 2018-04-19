@@ -1,26 +1,24 @@
 class Player {
-    constructor(data) {
+    constructor(props) {
         // console.log("Player props", data);
-
+        this.name = 'player';
         this.container = document.createElement('div');
         this.container.className = 'player-container';
 
-        this.playerName = document.createElement('h3');
-        this.playerName.className = 'username';
-        this.playerName.innerHTML = data.username;
-        this.scoreField = document.createElement('span');
-        this.scoreField.innerHTML = 'score'
+        this.username = document.createElement('h3');
+        this.username.className = 'username';
 
-        this.container.appendChild(this.playerName);
+        this.scoreField = document.createElement('span');
+        this.scoreField.className = 'score';
+
+        this.container.appendChild(this.username);
         this.container.appendChild(this.scoreField);
     }
 
-    update(data) {
-        // console.error("player", data);
-    }
-
-    startGame() {
-        console.log('game start');
+    update(props) {
+        console.error('player update');
+        if (props.username) this.username.textContent = `Welcome ${props.username}`;
+        this.scoreField.textContent = `Score: ${props.score}`;
     }
 }
 

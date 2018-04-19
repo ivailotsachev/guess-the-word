@@ -1,24 +1,25 @@
+/* Import Styles */
 import '../styles/styles.scss';
 /* Import components */
 import App from './components/App';
 
-/* set intial game state */
-const initialGameState = {
+/* set intial game params */
+const gameConfig = {
     score: 0,
-    username: '',
-    timer: 40,
+    username: null,
+    timer: 5,
     isPlayerLoggedIn: false,
     gameEnabled: false,
     showResult: false,
-    playAgain: false
+    playerTopScore: 0,
+    playerCurrentScore: 0,
+    wordToShow: null,
+    wordToMatch: null,
+    playAgain: false,
+    newTopScore: false
 }
 
-const app = new App({ ...initialGameState });
+const app = new App({ ...gameConfig });
 const root = document.getElementById('root');
-
-// TODO: this is test -- delete
-
-app.score = 40;
-app.notify();
 
 root.appendChild(app.container);
