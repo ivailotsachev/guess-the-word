@@ -142,7 +142,52 @@ class App {
         const playAgainBtn = this.container.querySelector('.play-again-btn');
 
         playAgainBtn.addEventListener('click', (e) => {
+            this.props.showResult = false;
+            this.notifyObserver('result')
             this.startGame();
+        })
+    }
+
+    startGame() {
+        // start countdown to zero
+        this.generateWord();
+        this.notifyObserver('player');
+
+        // generate first word
+        clearInterval(this.timer);
+
+        this.props.timer = this.gameConfig.timer;
+
+        this.timer = setInterval(() => {
+            this.props.timer--;
+            this.notify();
+
+            if (this.props.timer === 0) {
+                clearInterval(this.timer);
+                this.notify();
+                this.showResult();
+            }
+
+        }, 1000);
+
+        const userAnswer = this.container.querySelector('.user-answer');
+
+        userAnswer.addEventListener('keyup', (e) => {
+            const answer = e.target.value;
+
+            // check if there is user input and user hit the enter key
+            if (seconds > 0 && e.keyCode === 13) {
+                userAnswer.value = '';
+                // check if there is a match and notify observers
+                if (answer === this.props.wordToMatch) {
+                    // update score
+                    this.props.score += 5;
+                    // generate new word
+                    this.generateWord();
+                    // notify observers
+                    this.notify();
+                }
+            }
         })
     }
 
@@ -153,50 +198,8 @@ class App {
 
     notifyObserver(obsName) {
         const observer = this.observers.findIndex(obs => obs.name === obsName);
+        console.error('THIS PROPS', this.props);
         this.observers[observer].update(this.props);
-    }
-
-    startGame() {
-        // start countdown to zero
-        console.error("START GAMEEEEEEEEEE")
-        this.notifyObserver('player');
-
-        // generate first word
-        this.generateWord();
-        let seconds = this.gameConfig.timer;
-
-        // start countdown to 0
-        const timer = setInterval(() => {
-            --seconds;
-            this.notifyObserver('game');
-            console.log('seconds', seconds);
-
-            if (seconds < 1) {
-                clearInterval(timer);
-                this.showResult();
-                this.notify();
-            }
-        }, 1000);
-
-        const userAnswer = this.container.querySelector('.user-answer');
-
-        // userAnswer.addEventListener('keyup', (e) => {
-        //     const answer = e.target.value;
-
-        //     // check if there is user input and user hit the enter key
-        //     if (seconds > 0 && e.keyCode === 13) {
-        //         userAnswer.value = '';
-        //         // check if there is a match and notify observers
-        //         if (answer === this.props.wordToMatch) {
-        //             // update score
-        //             this.props.score += 5;
-        //             // generate new word
-        //             this.generateWord();
-        //             // notify observers
-        //             this.notify();
-        //         }
-        //     }
-        // })
     }
 
     notify() {

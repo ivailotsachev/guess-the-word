@@ -1,5 +1,7 @@
 class Result {
     constructor(data) {
+        this.name = 'result';
+
         this.container = document.createElement('div');
         this.container.className = 'result-container';
 
