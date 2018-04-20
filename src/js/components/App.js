@@ -51,8 +51,8 @@ class App {
 
     attachListeners() {
         this._logUser();
-        this._logOutUser();
         this._handleStartBtnCLick();
+        this._logOutUser();
     }
 
     _handleStartBtnCLick() {
@@ -67,62 +67,94 @@ class App {
 
     _logOutUser() {
         const logOutButton = this.container.querySelector('.logout-btn');
-        
+
         logOutButton.addEventListener('click', () => {
             const users = JSON.parse(localStorage.getItem('users'));
 
             users.forEach(user => user.loggedIn = false);
-            localStorage.setItem('users', JSON.stringify(users));
 
             this.props.isPlayerLoggedIn = false;
+            this.props.userName = this.gameConfig.userName;
+            this.props.score = this.gameConfig.score;
+
+            localStorage.setItem('users', JSON.stringify(users));
             this.notify();
         })
     }
 
     _logUser() {
+        // get users on game init
         const users = JSON.parse(localStorage.getItem('users')) || [];
         const userNameInput = this.container.querySelector('.username');
-        
+
+        console.log('ininial users', users);
         // check if user is already loggedIn
         const currentUser = users.filter(user => user.loggedIn === true);
+        console.warn("LOGGED IN USER", currentUser);
 
         if (currentUser.length) {
-            console.error('has user')
+            // user is already logged in
+            console.error('user is already logged in')
+
             this.props.userName = currentUser[0].userName;
             this.props.playerTopScore = currentUser[0].playerTopScore;
             this.props.isPlayerLoggedIn = true;
+
             this.notify();
-            console.table(this.props);
-            return;
+        } else {
+            console.log("LOGIN ELSE");
+
+            userNameInput.addEventListener('keyup', (e) => {
+                const userName = e.target.value;
+                console.error('aslkdjasldjalskjd');
+                if (userName && e.keyCode === 13) {
+                    // check in database if there is already user with this name
+                    console.log(e.target.value);
+                    const userIndex = users.findIndex(user => user.userName.toLowerCase() === e.target.value.toLowerCase());
+
+                    if (userIndex === -1) {
+                        console.warn('there is no user reg');
+                        console.error('user was registered');
+
+                        const user = {
+                            userName: userName,
+                            playerTopScore: this.gameConfig.playerTopScore,
+                            loggedIn: true,
+                        }
+
+                        this.props.userName = userName;
+                        this.props.playerTopScore = this.gameConfig.playerTopScore;
+                        this.props.isPlayerLoggedIn = true;
+                        this.notify();
+
+                        users.push(user);
+                        localStorage.setItem('users', JSON.stringify(users));
+
+                    } else {
+                        console.warn('there is user reg');
+                        const player = users[userIndex];
+
+                        this.props.userName = player.userName;
+                        this.props.playerTopScore = player.playerTopScore;
+                        this.props.isPlayerLoggedIn = true;
+
+                        const user = { ...player, loggedIn: true };
+
+                        // update user data in database
+                        const updateUsers = [...users.slice(0, userIndex), user, ...users.slice(userIndex + 1)];
+                        console.log('usalsdlaskj', updateUsers);
+
+                        localStorage.setItem('users', JSON.stringify(updateUsers));
+
+                        this.notify()
+                    }
+
+                    e.target.value = '';
+                }
+
+            })
         }
 
-        userNameInput.addEventListener('keyup', (e) => {
-            const userName = e.target.value;
-
-            if (userName && e.keyCode === 13) {
-                const user = {
-                    userName,
-                    playerTopScore: this.gameConfig.playerTopScore,
-                    loggedIn: true,
-                }
-
-                const isPlayerExist = users.findIndex(user => user.userName.toLowerCase() === userName.toLowerCase())
-
-                // if user dont exist
-                if (isPlayerExist) {
-                    users.push(user);
-                    localStorage.setItem('users', JSON.stringify(users));
-
-                    this.props.userName = userName;
-                    this.props.isPlayerLoggedIn = true;
-                    this.notify();
-                } else {
-                    const currentUser = users[isPlayerExist];
-                    this.props.userName = currentUser.userName;
-                    this.props.playerTopScore = currentUser.topScore;
-                }
-            }   
-        })
     }
 
     generateWord() {
@@ -160,9 +192,26 @@ class App {
         console.warn('currentScore', currentScore);
         console.warn(currentScore > topScore);
 
+        const users = JSON.parse(localStorage.getItem('users'));
+        const userIndex = users.findIndex(user => user.loggedIn === true);
+        const player = users[userIndex];
+
+        console.error('player', player);
+
         if (currentScore > topScore) {
+
             this.props.playerTopScore = currentScore;
             this.props.newTopScore = true;
+
+            const player = users[userIndex];
+            const user = { ...player, playerTopScore: currentScore };
+
+            // update player data in database:
+            const updateUsers = [...users.slice(0, userIndex), user, ...users.slice(userIndex + 1)];
+            console.log('usalsdlaskj', updateUsers);
+
+            localStorage.setItem('users', JSON.stringify(updateUsers));
+
         } else {
             this.props.newTopScore = false;
         }
@@ -174,7 +223,7 @@ class App {
         // notify observers
         this.notify();
     }
-    
+
 
     handlePlayAgainBtnClick() {
         const playAgainBtn = this.container.querySelector('.play-again-btn');
@@ -197,18 +246,18 @@ class App {
         // start countdown to zero
         this.generateWord();
         clearInterval(this.timer);
-        
+
         this.timer = setInterval(() => {
             this.props.timer--;
             this.notifyObserver('game');
-            
+
             if (this.props.timer === 0) {
                 clearInterval(this.timer);
                 this.showResult();
                 this.notify();
             }
         }, 1000);
-        
+
         const userAnswer = this.container.querySelector('.user-answer');
 
         userAnswer.addEventListener('keyup', (e) => {

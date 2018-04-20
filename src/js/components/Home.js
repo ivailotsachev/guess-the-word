@@ -11,7 +11,8 @@ class Home {
 
         this.userNameInput = document.createElement('input');
         this.userNameInput.className = 'username';
-        this.userNameInput.setAttribute('placeholder', 'username')
+        this.userNameInput.setAttribute('placeholder', 'username');
+        this.userNameInput.setAttribute('autofocus', true);
 
         this.message = document.createElement('p');
         this.message.innerHTML = 'Choose your username and hit ENTER to start the Game';
@@ -42,7 +43,9 @@ class Home {
             this.message.innerHTML = '';
             this.startBtn.classList.add('show');
         } else {
+            this.startBtn.classList.remove('show');
             this.userNameInput.classList.remove('hide');
+            this.message.textContent = 'Choose your username and hit ENTER to start the Game';
             this.logOutBtn.classList.remove('show');
         }
 

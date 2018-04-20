@@ -1,6 +1,5 @@
 class Player {
     constructor(props) {
-        // console.log("Player props", data);
         this.name = 'player';
         this.container = document.createElement('div');
         this.container.className = 'player-container';
@@ -17,8 +16,18 @@ class Player {
 
     update(props) {
         // console.error('player update', props);
-        if (props.userName) this.username.textContent = `Welcome ${props.userName}`;
-        this.scoreField.textContent = `Score: ${props.score}`;
+        this.props = { ...props };
+        const { isPlayerLoggedIn, userName, score } = props;
+
+        if (isPlayerLoggedIn) {
+            this.container.classList.add('show');
+            this.username.innerHTML = `Welcome: ${userName}`;
+            this.scoreField.innerHTML = `Score: ${score}`;
+        } else {
+            this.container.classList.remove('show');
+        }
+
+
     }
 }
 
