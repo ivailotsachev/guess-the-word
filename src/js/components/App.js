@@ -64,13 +64,16 @@ class App {
             this.startGame();
         })
     }
-    
+
     _logOutUser() {
         const logOutButton = this.container.querySelector('.logout-btn');
-
+        
         logOutButton.addEventListener('click', () => {
             const users = JSON.parse(localStorage.getItem('users'));
-            console.error(users);
+
+            users.forEach(user => user.loggedIn = false);
+            localStorage.setItem('users', JSON.stringify(users));
+
             this.props.isPlayerLoggedIn = false;
             this.notify();
         })
@@ -78,9 +81,20 @@ class App {
 
     _logUser() {
         const users = JSON.parse(localStorage.getItem('users')) || [];
-        console.error(users);
-
         const userNameInput = this.container.querySelector('.username');
+        
+        // check if user is already loggedIn
+        const currentUser = users.filter(user => user.loggedIn === true);
+
+        if (currentUser.length) {
+            console.error('has user')
+            this.props.userName = currentUser[0].userName;
+            this.props.playerTopScore = currentUser[0].playerTopScore;
+            this.props.isPlayerLoggedIn = true;
+            this.notify();
+            console.table(this.props);
+            return;
+        }
 
         userNameInput.addEventListener('keyup', (e) => {
             const userName = e.target.value;
@@ -109,30 +123,6 @@ class App {
                 }
             }   
         })
-
-        // if (user) {
-        //     this.props.isPlayerLoggedIn = true;
-        //     this.props.username = user.username;
-        //     this.notify();
-        // } else {
-        //     const userNameInput = this.container.querySelector('.username');
-
-        //     userNameInput.addEventListener('keyup', (e) => {
-        //         const username = e.target.value;
-        //         const user = {
-        //             username,
-        //             topscore: this.gameConfig.playerTopScore
-        //         }
-
-        //         if (e.keyCode === 13 && username.length) {
-        //             this.props.username = username;
-        //             this.props.isPlayerLoggedIn = true;
-        //             this.notify();
-
-        //             localStorage.setItem('user', JSON.stringify(user));
-        //         }
-        //     })
-        // }
     }
 
     generateWord() {

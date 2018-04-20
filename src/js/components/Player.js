@@ -16,8 +16,8 @@ class Player {
     }
 
     update(props) {
-        // console.error('player update');
-        if (props.username) this.username.textContent = `Welcome ${props.username}`;
+        // console.error('player update', props);
+        if (props.userName) this.username.textContent = `Welcome ${props.userName}`;
         this.scoreField.textContent = `Score: ${props.score}`;
     }
 }

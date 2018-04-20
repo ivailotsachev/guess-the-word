@@ -38,11 +38,13 @@ class Home {
 
         if (isPlayerLoggedIn) {
             this.userNameInput.classList.add('hide');
+            this.logOutBtn.classList.add('show');
             this.message.innerHTML = '';
             this.startBtn.classList.add('show');
+        } else {
+            this.userNameInput.classList.remove('hide');
+            this.logOutBtn.classList.remove('show');
         }
-
-        // if user hide user input and show start button
 
     }
 }
