@@ -20,11 +20,15 @@ class Home {
         this.startBtn.className = 'start-btn';
         this.startBtn.innerHTML = 'start';
 
+        this.logOutBtn = document.createElement('button');
+        this.logOutBtn.className = 'logout-btn';
+        this.logOutBtn.innerHTML = 'Log Out';
 
         this.container.appendChild(this.title);
         this.container.appendChild(this.userNameInput);
         this.container.appendChild(this.message);
         this.container.appendChild(this.startBtn);
+        this.container.appendChild(this.logOutBtn);
 
     }
 

@@ -51,6 +51,7 @@ class App {
 
     attachListeners() {
         this._logUser();
+        this._logOutUser();
         this._handleStartBtnCLick();
     }
 
@@ -59,41 +60,87 @@ class App {
 
         startBtn.addEventListener("click", () => {
             this.props.gameEnabled = true;
+            this.notify();
             this.startGame();
+        })
+    }
+    
+    _logOutUser() {
+        const logOutButton = this.container.querySelector('.logout-btn');
+
+        logOutButton.addEventListener('click', () => {
+            const users = JSON.parse(localStorage.getItem('users'));
+            console.error(users);
+            this.props.isPlayerLoggedIn = false;
             this.notify();
         })
     }
 
     _logUser() {
-        const username = localStorage.getItem('user');
+        const users = JSON.parse(localStorage.getItem('users')) || [];
+        console.error(users);
 
-        if (username) {
-            this.props.isPlayerLoggedIn = true;
-            this.props.username = username;
-            this.notify();
-        } else {
-            const userNameInput = this.container.querySelector('.username');
+        const userNameInput = this.container.querySelector('.username');
 
-            userNameInput.addEventListener('keyup', (e) => {
-                const username = e.target.value;
+        userNameInput.addEventListener('keyup', (e) => {
+            const userName = e.target.value;
 
-                if (e.keyCode === 13 && username.length) {
-                    this.props.username = username;
+            if (userName && e.keyCode === 13) {
+                const user = {
+                    userName,
+                    playerTopScore: this.gameConfig.playerTopScore,
+                    loggedIn: true,
+                }
+
+                const isPlayerExist = users.findIndex(user => user.userName.toLowerCase() === userName.toLowerCase())
+
+                // if user dont exist
+                if (isPlayerExist) {
+                    users.push(user);
+                    localStorage.setItem('users', JSON.stringify(users));
+
+                    this.props.userName = userName;
                     this.props.isPlayerLoggedIn = true;
                     this.notify();
-
-                    localStorage.setItem('user', username)
+                } else {
+                    const currentUser = users[isPlayerExist];
+                    this.props.userName = currentUser.userName;
+                    this.props.playerTopScore = currentUser.topScore;
                 }
-            })
+            }   
+        })
 
-        }
+        // if (user) {
+        //     this.props.isPlayerLoggedIn = true;
+        //     this.props.username = user.username;
+        //     this.notify();
+        // } else {
+        //     const userNameInput = this.container.querySelector('.username');
+
+        //     userNameInput.addEventListener('keyup', (e) => {
+        //         const username = e.target.value;
+        //         const user = {
+        //             username,
+        //             topscore: this.gameConfig.playerTopScore
+        //         }
+
+        //         if (e.keyCode === 13 && username.length) {
+        //             this.props.username = username;
+        //             this.props.isPlayerLoggedIn = true;
+        //             this.notify();
+
+        //             localStorage.setItem('user', JSON.stringify(user));
+        //         }
+        //     })
+        // }
     }
 
     generateWord() {
         const word = randomWords();
         this.props.wordToMatch = word;
         this.props.wordToShow = this.scrambleWord(word);
-        console.warn(word);
+        this.notify();
+        console.error(word);
     }
 
     scrambleWord(word) {
@@ -117,18 +164,18 @@ class App {
 
         // check user current score
         const topScore = this.props.playerTopScore;
-        const currentScore = this.props.currentScore = this.props.score
+        const currentScore = this.props.score;
 
         console.warn('topscore', topScore);
-        console.error('currentScore', currentScore);
-        console.error(currentScore > topScore);
+        console.warn('currentScore', currentScore);
+        console.warn(currentScore > topScore);
 
         if (currentScore > topScore) {
             this.props.playerTopScore = currentScore;
             this.props.newTopScore = true;
-            this.notify();
+        } else {
+            this.props.newTopScore = false;
         }
-
 
         // attach event to play again button
         this.handlePlayAgainBtnClick();
@@ -137,46 +184,48 @@ class App {
         // notify observers
         this.notify();
     }
+    
 
     handlePlayAgainBtnClick() {
         const playAgainBtn = this.container.querySelector('.play-again-btn');
 
         playAgainBtn.addEventListener('click', (e) => {
-            this.props.showResult = false;
-            this.notifyObserver('result')
+            this.resetGame();
             this.startGame();
         })
+    }
+
+    resetGame() {
+        console.error('reset game');
+        this.props.showResult = false;
+        this.props.score = 0;
+        this.props.timer = this.gameConfig.timer;
+        this.notify();
     }
 
     startGame() {
         // start countdown to zero
         this.generateWord();
-        this.notifyObserver('player');
-
-        // generate first word
         clearInterval(this.timer);
-
-        this.props.timer = this.gameConfig.timer;
-
+        
         this.timer = setInterval(() => {
             this.props.timer--;
-            this.notify();
-
+            this.notifyObserver('game');
+            
             if (this.props.timer === 0) {
                 clearInterval(this.timer);
-                this.notify();
                 this.showResult();
+                this.notify();
             }
-
         }, 1000);
-
+        
         const userAnswer = this.container.querySelector('.user-answer');
 
         userAnswer.addEventListener('keyup', (e) => {
             const answer = e.target.value;
 
             // check if there is user input and user hit the enter key
-            if (seconds > 0 && e.keyCode === 13) {
+            if (this.props.timer > 0 && e.keyCode === 13) {
                 userAnswer.value = '';
                 // check if there is a match and notify observers
                 if (answer === this.props.wordToMatch) {
@@ -198,7 +247,6 @@ class App {
 
     notifyObserver(obsName) {
         const observer = this.observers.findIndex(obs => obs.name === obsName);
-        console.error('THIS PROPS', this.props);
         this.observers[observer].update(this.props);
     }
 

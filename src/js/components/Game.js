@@ -23,7 +23,7 @@ class Game {
     }
 
     update(props) {
-        console.log('Game Update', props);
+        // console.log('Game Update', props);
 
         props.gameEnabled && this.container.classList.add('show');
 
