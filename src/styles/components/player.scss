@@ -1,0 +1,8 @@
+.player-container {
+    border: 1px solid red;
+    padding: 10px;
+    opacity: 1;
+    &.hide {
+        opacity: 0
+    }
+}

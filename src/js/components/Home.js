@@ -3,7 +3,7 @@ class Home {
         // console.log("Home props", props);
 
         this.container = document.createElement('div');
-        this.container.className = 'home-screen';
+        this.container.className = 'home-container';
 
         this.title = document.createElement('h1');
         this.title.className = 'game-title';
@@ -21,32 +21,27 @@ class Home {
         this.startBtn.className = 'start-btn';
         this.startBtn.innerHTML = 'start';
 
-        this.logOutBtn = document.createElement('button');
-        this.logOutBtn.className = 'logout-btn';
-        this.logOutBtn.innerHTML = 'Log Out';
-
         this.container.appendChild(this.title);
         this.container.appendChild(this.userNameInput);
         this.container.appendChild(this.message);
         this.container.appendChild(this.startBtn);
-        this.container.appendChild(this.logOutBtn);
-
     }
 
     update(props) {
-        // console.warn('Home Update', props);
+        console.warn('Home Update', props);
         const { isPlayerLoggedIn } = props;
 
         if (isPlayerLoggedIn) {
+            this.container.classList.add('hide');
             this.userNameInput.classList.add('hide');
-            this.logOutBtn.classList.add('show');
             this.message.innerHTML = '';
             this.startBtn.classList.add('show');
         } else {
+            this.container.classList.add('show');
             this.startBtn.classList.remove('show');
             this.userNameInput.classList.remove('hide');
             this.message.textContent = 'Choose your username and hit ENTER to start the Game';
-            this.logOutBtn.classList.remove('show');
+            // this.logOutBtn.classList.remove('show');
         }
 
     }

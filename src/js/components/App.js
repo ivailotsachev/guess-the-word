@@ -27,9 +27,9 @@ class App {
         const result = new Result(this.props);
         const leaderBoard = new LeaderBoard(this.props);
 
+        this.container.appendChild(player.container);
         this.container.appendChild(home.container);
         this.container.appendChild(game.container);
-        this.container.appendChild(player.container);
         this.container.appendChild(result.container);
         this.container.appendChild(leaderBoard.container);
 
@@ -39,20 +39,16 @@ class App {
         this.addObserver(result);
         this.addObserver(leaderBoard);
 
-        // append all components to game container
-        this.container.appendChild(player.container);
-        this.container.appendChild(game.container);
-        this.container.appendChild(result.container);
-        this.container.appendChild(leaderBoard.container);
-
         // attach all event listeners 
         this.attachListeners();
+
+        this.notify();
     }
 
     attachListeners() {
         this._logUser();
-        this._handleStartBtnCLick();
         this._logOutUser();
+        this._handleStartBtnCLick();
     }
 
     _handleStartBtnCLick() {
@@ -67,7 +63,7 @@ class App {
 
     _logOutUser() {
         const logOutButton = this.container.querySelector('.logout-btn');
-
+        console.error(logOutButton)
         logOutButton.addEventListener('click', () => {
             const users = JSON.parse(localStorage.getItem('users'));
 
@@ -85,9 +81,8 @@ class App {
     _logUser() {
         // get users on game init
         const users = JSON.parse(localStorage.getItem('users')) || [];
-        const userNameInput = this.container.querySelector('.username');
-
-        console.log('ininial users', users);
+        const userNameInput = this.container.querySelector('input.username');
+        console.error(userNameInput);
         // check if user is already loggedIn
         const currentUser = users.filter(user => user.loggedIn === true);
         console.warn("LOGGED IN USER", currentUser);
@@ -104,9 +99,9 @@ class App {
         } else {
             console.log("LOGIN ELSE");
 
-            userNameInput.addEventListener('keyup', (e) => {
+            userNameInput && userNameInput.addEventListener('keyup', (e) => {
                 const userName = e.target.value;
-                console.error('aslkdjasldjalskjd');
+                console.log(userName);
                 if (userName && e.keyCode === 13) {
                     // check in database if there is already user with this name
                     console.log(e.target.value);
