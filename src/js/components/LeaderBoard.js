@@ -2,15 +2,25 @@ class LeaderBoard {
     constructor(props) {
         this.container = document.createElement('div');
         this.container.className = 'leaderboard';
+
+        this.closeBtn = document.createElement('span');
+        this.closeBtn.className = 'close-btn';
+        this.container.appendChild(this.closeBtn);
     }
 
     update(props) {
         const users = JSON.parse(localStorage.getItem('users'));
-        const { notifyLeaderBoard } = props;
+        const { notifyLeaderBoard, showLeaderBoard } = props;
         let sortedUsers;
 
         if (users) sortedUsers = users.sort((a, b) => a.playerTopScore < b.playerTopScore);
-        notifyLeaderBoard && this.renderBoard(sortedUsers);
+
+        if (showLeaderBoard) {
+            this.container.classList.add('show');
+            this.renderBoard(sortedUsers);
+        } else {
+            this.container.classList.remove('show');
+        }
     }
 
     renderBoard(data) {
@@ -21,6 +31,7 @@ class LeaderBoard {
 
         data.forEach(player => {
             const div = document.createElement('div');
+            div.className = 'leaderboard-item';
             const nameField = document.createElement('h3');
             const scoreField = document.createElement('p');
 

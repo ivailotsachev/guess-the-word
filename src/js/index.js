@@ -18,7 +18,8 @@ const gameConfig = {
     wordToMatch: null,
     playAgain: false,
     newTopScore: false,
-    notifyLeaderBoard: false
+    notifyLeaderBoard: false,
+    showLeaderBoard: true
 }
 
 const app = new App({ ...gameConfig });

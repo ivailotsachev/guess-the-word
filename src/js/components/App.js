@@ -49,8 +49,28 @@ class App {
         this._logOutUser();
         this._logUser();
         this._handleStartBtnCLick();
+        this._toggleLeaderBoard();
+        this._handleCloseButtonClick();
     }
 
+    _handleCloseButtonClick() {
+        const closeBtn = this.container.querySelector('.close-btn');
+
+        closeBtn.addEventListener('click', () => {
+            this.props.showLeaderBoard = false;
+            this.notify();
+        })
+    }
+
+    _toggleLeaderBoard() {
+        const leaderBoardBtns = this.container.querySelectorAll('.show-lb-btn');
+
+        leaderBoardBtns.forEach(btn => btn.addEventListener('click', () => {
+            this.props.showLeaderBoard = true;
+            this.notify();
+        }))
+
+    }
     _handleStartBtnCLick() {
         const startBtn = this.container.querySelector('.start-btn');
 
@@ -67,12 +87,15 @@ class App {
         const logOutBtns = this.container.querySelectorAll('.logout-btn');
 
         logOutBtns.forEach(btn => btn.addEventListener('click', () => {
+            console.error('logout');
             const dataUsers = JSON.parse(localStorage.getItem('users'));
 
 
             this.props.gameEnabled = false;
             this.props.isPlayerLoggedIn = false;
             this.props.score = this.gameConfig.score;
+            this.props.showResult = false;
+            this.props.notifyLeaderBoard = false;
             this.props.playerTopScore = this.gameConfig.playerTopScore;
 
             dataUsers.forEach(user => user.loggedIn = false);
