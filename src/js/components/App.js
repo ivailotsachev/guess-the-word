@@ -228,7 +228,7 @@ class App {
         this.props.wordToMatch = word;
         this.props.wordToShow = this.scrambleWord(word);
         this.notify();
-        console.error(word);
+        this.props.debug.logWord && console.log(word)
     }
 
     scrambleWord(word) {

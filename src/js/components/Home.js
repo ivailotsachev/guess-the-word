@@ -39,7 +39,7 @@ class Home {
             this.container.classList.add('show');
             this.startBtn.classList.remove('show');
             this.userNameInput.classList.remove('hide');
-            this.message.textContent = 'Choose your username and hit ENTER to start the Game';
+            this.message.textContent = 'Choose your username and hit ENTER';
 
             TweenMax.fromTo(this.container, 0.6, { y: 200 }, { y: 0 });
         }

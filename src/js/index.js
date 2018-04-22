@@ -7,7 +7,7 @@ import App from './components/App';
 const gameConfig = {
     score: 0,
     userName: null,
-    timer: 20,
+    timer: 40,
     isPlayerLoggedIn: false,
     gameEnabled: false,
     isGameActive: false,
@@ -19,7 +19,10 @@ const gameConfig = {
     playAgain: false,
     newTopScore: false,
     notifyLeaderBoard: false,
-    showLeaderBoard: false
+    showLeaderBoard: false,
+    debug: {
+        logWord: true
+    }
 }
 
 const app = new App({ ...gameConfig });

@@ -8,6 +8,7 @@ class Game {
         this.wordField.className = 'word-to-match';
 
         this.timeField = document.createElement('h4');
+        this.timeField.classList = 'game-timer';
 
         this.userAnswer = document.createElement('input');
         this.userAnswer.setAttribute('autofocus', true);
@@ -27,7 +28,7 @@ class Game {
 
         gameEnabled ? this.container.classList.add('show') : this.container.classList.remove('show');
 
-        this.timeField.innerHTML = `Time Left: ${props.timer}`;
+        this.timeField.innerHTML = `Time Left: <span class="time">${props.timer}</span>`;
         this.wordField.innerHTML = `${props.wordToShow}`;
     }
 }

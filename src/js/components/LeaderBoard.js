@@ -9,6 +9,10 @@ class LeaderBoard {
         this.closeBtn.className = 'close-btn';
         this.items = document.createElement('div');
 
+        this.title = document.createElement('h1');
+        this.title.innerHTML = 'LeaderBoard';
+
+        this.container.appendChild(this.title);
         this.container.appendChild(this.closeBtn);
         this.container.appendChild(this.items);
 

@@ -2,7 +2,10 @@
     padding: 10px;
     width: 100%;
     .game-title {
-        font-size: 60px;
+        font-size: 80px;
+        text-shadow: 2px 2px 5px #617374;
+        border-bottom: 1px solid rgba(0,0,0,0.1);
+        margin: 50px auto;
     }
     .username {
         border: 1px solid red;
