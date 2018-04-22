@@ -21,19 +21,23 @@ class Player {
 
     update(props) {
 
-        console.error('player update', props);
-        const { isPlayerLoggedIn, userName, score } = props;
-
-        console.log(this.container);
+        // console.error('player update', props);
+        const { isPlayerLoggedIn, userName, score, playerTopScore, isGameActive } = props;
 
         if (isPlayerLoggedIn) {
             this.container.classList.remove('hide');
             this.username.innerHTML = `Player: ${userName}`;
-            this.scoreField.innerHTML = `Score: ${score}`;
+            this.scoreField.innerHTML = `
+                Best Score: <span>${playerTopScore}</span> 
+                Score: <span>${score}</span>`;
         } else {
             this.container.classList.add('hide');
         }
 
+        isGameActive ?
+            this.logOutBtn.setAttribute('disabled', 'disabled')
+            :
+            this.logOutBtn.removeAttribute('disabled');
 
     }
 }

@@ -28,8 +28,7 @@ class Home {
     }
 
     update(props) {
-        console.warn('Home Update', props);
-        const { isPlayerLoggedIn } = props;
+        const { isPlayerLoggedIn, gameEnabled } = props;
 
         if (isPlayerLoggedIn) {
             this.container.classList.add('hide');
@@ -42,6 +41,10 @@ class Home {
             this.userNameInput.classList.remove('hide');
             this.message.textContent = 'Choose your username and hit ENTER to start the Game';
             // this.logOutBtn.classList.remove('show');
+        }
+
+        if (gameEnabled) {
+            this.startBtn.classList.remove('show');
         }
 
     }
