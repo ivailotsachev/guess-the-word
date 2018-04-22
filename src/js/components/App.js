@@ -97,21 +97,15 @@ class App {
         const logOutBtns = this.container.querySelectorAll('.logout-btn');
 
         logOutBtns.forEach(btn => btn.addEventListener('click', () => {
-            console.error('logout');
             const dataUsers = JSON.parse(localStorage.getItem('users'));
-
 
             this._resetGame();
 
             dataUsers.forEach(user => user.loggedIn = false);
             localStorage.setItem('users', JSON.stringify(dataUsers));
 
-            console.error("LOG OUT");
-            console.table(JSON.parse(localStorage.getItem('users')));
-
             this._logUser();
             this.notify();
-
         }));
     }
 
@@ -132,27 +126,18 @@ class App {
 
         // 1st check for users
         const users = JSON.parse(localStorage.getItem('users'));
-        // console.error('LOGIN USERS');
-        // console.table(users);
 
         const userNameInput = this.container.querySelector('input.username');
         let user;
 
-        // 2. if users exits
+        // if users exits
         if (users) {
-            // console.error('Log in IF Case -> there is database :)');
 
             // 1. check for logged in user and log it /refresh browser case /
             const users = JSON.parse(localStorage.getItem('users'));
             const loggedInUser = users.filter(user => user.loggedIn === true);
 
             if (loggedInUser.length) {
-                // console.warn('-------------------');
-                // console.log('if logged in in database --> log user');
-                // console.warn("USER IS ")
-                // console.table(loggedInUser);
-                // console.warn('-------------------');
-
                 const userToLog = this._getLoggedInUser(users);
 
                 this.props.userName = users[userToLog].userName;
@@ -162,22 +147,15 @@ class App {
 
                 this.notify();
             } else {
-                console.warn('-------------------');
-                console.log('if NO logged in in database -> user');
-                console.warn('-------------------');
-
                 userNameInput.addEventListener('keyup', (e) => {
                     const userName = e.target.value;
 
                     if (userName && e.keyCode === 13) {
                         // get username and check data for existing user
                         const registeredUser = users.filter(user => user.userName === userName);
-                        console.error('registeredUser', registeredUser)
                         // if user is already registered log him
                         if (registeredUser.length) {
-                            console.error('database: true, user with this name YES ---- log user');
                             const userIndex = this._getUserByName(users, registeredUser[0].userName);
-                            console.error('userIndex', userIndex);
 
                             // set user loggedIn property to true
                             const updateUser = users[userIndex];
@@ -192,8 +170,6 @@ class App {
 
                         } else {
                             // create new user;
-                            console.error('database: true, no user with this name ---- CREATE');
-
                             user = {
                                 userName,
                                 playerTopScore: this.gameConfig.playerTopScore,
@@ -208,7 +184,6 @@ class App {
 
                             users.push(user);
                             localStorage.setItem('users', JSON.stringify(users));
-                            console.error(localStorage.users);
                         }
 
                         e.target.value = '';
@@ -279,16 +254,9 @@ class App {
         // check user current score
         const topScore = this.props.playerTopScore;
         const currentScore = this.props.score;
-
-        console.warn('topscore', topScore);
-        console.warn('currentScore', currentScore);
-        console.warn(currentScore > topScore);
-
         const users = JSON.parse(localStorage.getItem('users'));
         const userIndex = users.findIndex(user => user.loggedIn === true);
         const player = users[userIndex];
-
-        console.error('player', player);
 
         if (currentScore > topScore) {
 
@@ -300,7 +268,6 @@ class App {
 
             // update player data in database:
             const updateUsers = [...users.slice(0, userIndex), user, ...users.slice(userIndex + 1)];
-            console.log('usalsdlaskj', updateUsers);
 
             localStorage.setItem('users', JSON.stringify(updateUsers));
 

@@ -22,8 +22,6 @@ class Player {
     }
 
     update(props) {
-
-        // console.error('player update', props);
         const { isPlayerLoggedIn, userName, score, playerTopScore, isGameActive } = props;
 
         if (isPlayerLoggedIn) {

@@ -2,8 +2,6 @@ import { TweenMax, Power2, TimelineLite } from "gsap";
 
 class Home {
     constructor(props) {
-        // console.log("Home props", props);
-
         this.container = document.createElement('div');
         this.container.className = 'home-container';
 

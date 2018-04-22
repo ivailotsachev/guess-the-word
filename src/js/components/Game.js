@@ -25,8 +25,6 @@ class Game {
     update(props) {
         const { gameEnabled, isGameActive } = props;
 
-        console.error(gameEnabled);
-
         gameEnabled ? this.container.classList.add('show') : this.container.classList.remove('show');
 
         this.timeField.innerHTML = `Time Left: ${props.timer}`;

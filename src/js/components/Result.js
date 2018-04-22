@@ -31,7 +31,6 @@ class Result {
     }
 
     update(props) {
-        // console.error('result update', props);
         this.userScore.innerHTML = `Your Score: ${props.score}`;
         props.showResult ? this.container.classList.add('show') : this.container.classList.remove('show');
 
