@@ -1,3 +1,5 @@
+import { TweenMax, Power2, TimelineLite } from "gsap";
+
 class LeaderBoard {
     constructor(props) {
         this.container = document.createElement('div');
@@ -5,44 +7,38 @@ class LeaderBoard {
 
         this.closeBtn = document.createElement('span');
         this.closeBtn.className = 'close-btn';
+        this.items = document.createElement('div');
+
         this.container.appendChild(this.closeBtn);
+        this.container.appendChild(this.items);
+
     }
 
     update(props) {
+        const { showLeaderBoard } = props;
         const users = JSON.parse(localStorage.getItem('users'));
-        const { notifyLeaderBoard, showLeaderBoard } = props;
-        let sortedUsers;
+        this.items.innerHTML = '';
 
-        if (users) sortedUsers = users.sort((a, b) => a.playerTopScore < b.playerTopScore);
+        users && users
+            .sort((a, b) => a.playerTopScore < b.playerTopScore)
+            .forEach(user => {
+                const userEl = document.createElement('div');
+                const userName = document.createElement('h4');
+                const score = document.createElement('p');
 
-        if (showLeaderBoard) {
-            this.container.classList.add('show');
-            this.renderBoard(sortedUsers);
-        } else {
-            this.container.classList.remove('show');
-        }
-    }
+                userEl.className = 'leaderboard-item';
 
-    renderBoard(data) {
+                userName.innerHTML = user.userName;
+                score.innerHTML = user.playerTopScore;
 
-        const div = document.createElement('div');
-        const nameField = document.createElement('h3');
-        const scoreField = document.createElement('p');
+                userEl.appendChild(userName)
+                userEl.appendChild(score);
+                this.items.appendChild(userEl);
+            })
 
-        data.forEach(player => {
-            const div = document.createElement('div');
-            div.className = 'leaderboard-item';
-            const nameField = document.createElement('h3');
-            const scoreField = document.createElement('p');
-
-            nameField.textContent = player.userName;
-            scoreField.textContent = player.playerTopScore;
-
-            div.appendChild(nameField);
-            div.appendChild(scoreField);
-
-            this.container.appendChild(div);
-        })
+        const elements = this.container.querySelectorAll('.leaderboard-item')
+        TweenMax.staggerFromTo(elements, 0.3, { y: 100 }, { y: 0 }, 0.1);
+        showLeaderBoard && this.container.classList.add('show');
     }
 }
 

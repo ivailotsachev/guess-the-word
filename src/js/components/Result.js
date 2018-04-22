@@ -35,9 +35,8 @@ class Result {
         this.userScore.innerHTML = `Your Score: ${props.score}`;
         props.showResult ? this.container.classList.add('show') : this.container.classList.remove('show');
 
-        if (props.newTopScore) {
-            console.warn('new top score')
-        }
+        if (props.newTopScore)
+            this.userScore.innerHTML = `Awesome !!! <br/> Your new top score: ${props.score}`;
     }
 }
 

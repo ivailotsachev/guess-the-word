@@ -82,6 +82,16 @@ class App {
         })
     }
 
+    _resetGame() {
+        this.props.isPlayerLoggedIn = false;
+        this.props.score = this.gameConfig.score;
+        this.props.timer = this.gameConfig.timer;
+        this.props.showResult = false;
+        this.props.notifyLeaderBoard = false;
+        this.props.playerTopScore = this.gameConfig.playerTopScore;
+        this.props.gameEnabled = false;
+    }
+
     _logOutUser() {
         // get all logout buttons and attach event
         const logOutBtns = this.container.querySelectorAll('.logout-btn');
@@ -91,12 +101,7 @@ class App {
             const dataUsers = JSON.parse(localStorage.getItem('users'));
 
 
-            this.props.gameEnabled = false;
-            this.props.isPlayerLoggedIn = false;
-            this.props.score = this.gameConfig.score;
-            this.props.showResult = false;
-            this.props.notifyLeaderBoard = false;
-            this.props.playerTopScore = this.gameConfig.playerTopScore;
+            this._resetGame();
 
             dataUsers.forEach(user => user.loggedIn = false);
             localStorage.setItem('users', JSON.stringify(dataUsers));
@@ -111,18 +116,15 @@ class App {
     }
 
     updateUsersDataBase(collection, index, user) {
-        console.error('updateUsersDataBase');
         const updateUsers = [...collection.slice(0, index), user, ...collection.slice(index + 1)];
         localStorage.setItem('users', JSON.stringify(updateUsers));
     }
 
     _getLoggedInUser(users) {
-        console.error('_getLoggedInUser');
         return users.findIndex(user => user.loggedIn === true);
     }
 
     _getUserByName(collection, username) {
-        console.error('_getUserByName')
         return collection.findIndex(user => user.userName === username);
     }
 
@@ -130,26 +132,26 @@ class App {
 
         // 1st check for users
         const users = JSON.parse(localStorage.getItem('users'));
-        console.error('LOGIN USERS');
-        console.table(users);
+        // console.error('LOGIN USERS');
+        // console.table(users);
 
         const userNameInput = this.container.querySelector('input.username');
         let user;
 
         // 2. if users exits
         if (users) {
-            console.error('Log in IF Case -> there is database :)');
+            // console.error('Log in IF Case -> there is database :)');
 
             // 1. check for logged in user and log it /refresh browser case /
             const users = JSON.parse(localStorage.getItem('users'));
             const loggedInUser = users.filter(user => user.loggedIn === true);
 
             if (loggedInUser.length) {
-                console.warn('-------------------');
-                console.log('if logged in in database --> log user');
-                console.warn("USER IS ")
-                console.table(loggedInUser);
-                console.warn('-------------------');
+                // console.warn('-------------------');
+                // console.log('if logged in in database --> log user');
+                // console.warn("USER IS ")
+                // console.table(loggedInUser);
+                // console.warn('-------------------');
 
                 const userToLog = this._getLoggedInUser(users);
 
@@ -318,13 +320,12 @@ class App {
         const playAgainBtn = this.container.querySelector('.play-again-btn');
 
         playAgainBtn.addEventListener('click', (e) => {
-            this.resetGame();
+            this.restartGame();
             this.startGame();
         })
     }
 
-    resetGame() {
-        console.error('reset game');
+    restartGame() {
         this.props.showResult = false;
         this.props.score = 0;
         this.props.timer = this.gameConfig.timer;

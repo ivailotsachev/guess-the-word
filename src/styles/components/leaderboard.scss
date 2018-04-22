@@ -7,8 +7,8 @@
     width: 100%;
     min-height: 100%;
     z-index: -1;
-    background: orange;
-    padding: 50px 30px;
+    background: darken(#95a5a6, 10%);
+    padding: 100px 30px;
     counter-reset: item;
     &.show {
         opacity: 1;
@@ -23,9 +23,21 @@
     .leaderboard-item {
         padding: 10px 20px;
         display: flex;
-        justify-content: space-between;
+        justify-content: flex-start;
+        align-items: center;
+        h4 {
+            padding: 0 20px;
+        }
+        p {
+            flex: 1;
+            text-align: right;
+        }
+        &:first-child {
+            background: black;
+            color: white;
+        }
         &:not(:last-child) {
-            border-bottom: 1px solid #000;
+            border-bottom: 1px solid darken(#95a5a6, 20%);
         }
         &::before {
             counter-increment: item;

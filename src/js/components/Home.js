@@ -1,3 +1,5 @@
+import { TweenMax, Power2, TimelineLite } from "gsap";
+
 class Home {
     constructor(props) {
         // console.log("Home props", props);
@@ -40,7 +42,8 @@ class Home {
             this.startBtn.classList.remove('show');
             this.userNameInput.classList.remove('hide');
             this.message.textContent = 'Choose your username and hit ENTER to start the Game';
-            // this.logOutBtn.classList.remove('show');
+
+            TweenMax.fromTo(this.container, 0.6, { y: 200 }, { y: 0 });
         }
 
         if (gameEnabled) {

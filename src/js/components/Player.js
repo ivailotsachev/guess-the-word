@@ -1,3 +1,5 @@
+import { TweenMax, Power2, TimelineLite } from "gsap";
+
 class Player {
     constructor(props) {
         this.name = 'player';
@@ -38,7 +40,6 @@ class Player {
             this.logOutBtn.setAttribute('disabled', 'disabled')
             :
             this.logOutBtn.removeAttribute('disabled');
-
     }
 }
 

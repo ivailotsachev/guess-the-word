@@ -23,16 +23,14 @@ class Game {
     }
 
     update(props) {
-        console.log('Game Update', props);
         const { gameEnabled, isGameActive } = props;
 
-        console.error("gameEnabled", gameEnabled);
-        console.error('isGameActive', isGameActive);
+        console.error(gameEnabled);
 
-        props.gameEnabled && this.container.classList.add('show');
+        gameEnabled ? this.container.classList.add('show') : this.container.classList.remove('show');
 
-        this.timeField.innerHTML = `Time Left: ${props.timer}`
-        this.wordField.innerHTML = `${props.wordToShow}`
+        this.timeField.innerHTML = `Time Left: ${props.timer}`;
+        this.wordField.innerHTML = `${props.wordToShow}`;
     }
 }
 

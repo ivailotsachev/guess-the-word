@@ -1,5 +1,6 @@
 .game-container {
     opacity: 0;
+    transition: opacity 1s;
     &.show {
         opacity: 1;
     }
@@ -7,5 +8,4 @@
     .word-to-match {
         font-size: 60px;
     }
-
 }
