@@ -58,6 +58,7 @@ class App {
 
         closeBtn.addEventListener('click', () => {
             this.props.showLeaderBoard = false;
+            console.error('clicked');
             this.notify();
         })
     }
@@ -67,6 +68,8 @@ class App {
 
         leaderBoardBtns.forEach(btn => btn.addEventListener('click', () => {
             this.props.showLeaderBoard = true;
+            this.props.notifyLeaderBoard = true;
+
             this.notify();
         }))
 
@@ -249,6 +252,7 @@ class App {
         // show result
         this.props.showResult = true;
         this.props.isGameActive = false;
+        this.props.gameEnabled = false;
         this.timer = this.gameConfig.timer;
 
         // check user current score
@@ -294,6 +298,7 @@ class App {
 
     restartGame() {
         this.props.showResult = false;
+        this.props.gameEnabled = true;
         this.props.score = 0;
         this.props.timer = this.gameConfig.timer;
         this.notify();
@@ -312,7 +317,6 @@ class App {
 
             if (this.props.timer === 0) {
                 clearInterval(this.timer);
-                this.props.notifyLeaderBoard = true;
                 this.showResult();
                 this.notify();
             }

@@ -12,10 +12,9 @@ class Home {
         this.userNameInput = document.createElement('input');
         this.userNameInput.className = 'username';
         this.userNameInput.setAttribute('placeholder', 'username');
-        this.userNameInput.setAttribute('autofocus', true);
 
         this.message = document.createElement('p');
-        this.message.innerHTML = 'Choose your username and hit ENTER to start the Game';
+        this.message.innerHTML = 'Choose your username and hit ENTER';
 
         this.startBtn = document.createElement('button');
         this.startBtn.className = 'start-btn';
@@ -35,19 +34,29 @@ class Home {
             this.userNameInput.classList.add('hide');
             this.message.innerHTML = '';
             this.startBtn.classList.add('show');
+            this.removeFocus();
         } else {
             this.container.classList.add('show');
             this.startBtn.classList.remove('show');
             this.userNameInput.classList.remove('hide');
             this.message.textContent = 'Choose your username and hit ENTER';
 
-            TweenMax.fromTo(this.container, 0.6, { y: 200 }, { y: 0 });
+            this.setFocus();
         }
 
         if (gameEnabled) {
             this.startBtn.classList.remove('show');
         }
+    }
 
+    setFocus() {
+        const el = this.container.querySelector('.username');
+        el.autofocus = true;
+    }
+
+    removeFocus() {
+        const el = this.container.querySelector('.username');
+        el.autofocus = false;
     }
 }
 

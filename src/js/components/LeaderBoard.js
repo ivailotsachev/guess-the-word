@@ -19,13 +19,16 @@ class LeaderBoard {
     }
 
     update(props) {
-        const { showLeaderBoard } = props;
-        const users = JSON.parse(localStorage.getItem('users'));
+        const { showLeaderBoard, notifyLeaderBoard } = props;
         this.items.innerHTML = '';
+        
+        console.error('LB Notify', notifyLeaderBoard)
+        
+        if (notifyLeaderBoard) {
+            const users = JSON.parse(localStorage.getItem('users'));
+            const sorted = users.sort((a, b) =>(a.playerTopScore > b.playerTopScore) ? -1 : 1);
 
-        users && users
-            .sort((a, b) => a.playerTopScore < b.playerTopScore)
-            .forEach(user => {
+            sorted.forEach(user => {
                 const userEl = document.createElement('div');
                 const userName = document.createElement('h4');
                 const score = document.createElement('p');
@@ -39,10 +42,12 @@ class LeaderBoard {
                 userEl.appendChild(score);
                 this.items.appendChild(userEl);
             })
+        }
 
-        const elements = this.container.querySelectorAll('.leaderboard-item')
-        TweenMax.staggerFromTo(elements, 0.3, { y: 100 }, { y: 0 }, 0.1);
-        showLeaderBoard && this.container.classList.add('show');
+        const elements = this.container.querySelectorAll('.leaderboard-item');
+
+        TweenMax.staggerFromTo(elements, 0.3, { y: 100 }, { y: 0 }, 0.05);
+        showLeaderBoard ? this.container.classList.add('show') : this.container.classList.remove('show')
     }
 }
 

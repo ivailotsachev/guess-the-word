@@ -7,7 +7,7 @@ import App from './components/App';
 const gameConfig = {
     score: 0,
     userName: null,
-    timer: 40,
+    timer: 3,
     isPlayerLoggedIn: false,
     gameEnabled: false,
     isGameActive: false,

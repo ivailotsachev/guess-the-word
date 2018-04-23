@@ -39,6 +39,7 @@ button {
     font-weight: bold;
     background: darken(#95a5a6, 20%);
     border: 1px solid darken(#95a5a6, 10%);
+    border-radius: 5px;
     color: white;
     font-size: 12px;
     cursor: pointer;
@@ -48,6 +49,24 @@ button {
     text-transform: uppercase;
 }
 
-input:focus {
-    border: 2px solid orange;
+input {
+    &::-webkit-input-placeholder {
+        color: white;
+        transition: color 0.3s;
+    }
+    &::-moz-placeholder {
+        color: white;
+        transition: color 0.3s;
+    }
+    &:focus {
+        &::-webkit-input-placeholder {
+            color: transparent;
+        }
+        &::-moz-placeholder {
+            color: transparent;
+        }
+    }
+    &:focus {
+        border: 2px solid orange;
+    }
 }
