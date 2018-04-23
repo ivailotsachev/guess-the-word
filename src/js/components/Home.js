@@ -40,7 +40,6 @@ class Home {
             this.startBtn.classList.remove('show');
             this.userNameInput.classList.remove('hide');
             this.message.textContent = 'Choose your username and hit ENTER';
-
             this.setFocus();
         }
 

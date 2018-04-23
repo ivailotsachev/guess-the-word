@@ -23,18 +23,27 @@
     .word-to-match {
         font-size: 60px;
         letter-spacing: 2px;
+        text-shadow: 2px 2px 5px black;
     }
-    .time {
+    .time,
+    .score-counter {
         color: darken(#95a5a6, 40%);
-        font-size: 26px;
+        font-size: 30px;
+        margin-left: 10px;
     }
-    .game-timer {
-        display: inline-block;
+    .game-timer,
+    .game-score {
+        display: flex;
+        align-items: center;
         padding: 10px 20px;
         border-radius: 5px;
         background: #95a5a6;
         position: absolute;
         top: 10px;
         right: 10px;
+    }
+    .game-score {
+        left: 10px;
+        right: auto;
     }
 }

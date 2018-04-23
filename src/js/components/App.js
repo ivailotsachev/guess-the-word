@@ -58,7 +58,6 @@ class App {
 
         closeBtn.addEventListener('click', () => {
             this.props.showLeaderBoard = false;
-            console.error('clicked');
             this.notify();
         })
     }

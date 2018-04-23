@@ -21,12 +21,10 @@ class LeaderBoard {
     update(props) {
         const { showLeaderBoard, notifyLeaderBoard } = props;
         this.items.innerHTML = '';
-        
-        console.error('LB Notify', notifyLeaderBoard)
-        
+
         if (notifyLeaderBoard) {
             const users = JSON.parse(localStorage.getItem('users'));
-            const sorted = users.sort((a, b) =>(a.playerTopScore > b.playerTopScore) ? -1 : 1);
+            const sorted = users.sort((a, b) => (a.playerTopScore > b.playerTopScore) ? -1 : 1);
 
             sorted.forEach(user => {
                 const userEl = document.createElement('div');

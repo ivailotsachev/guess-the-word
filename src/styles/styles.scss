@@ -1,4 +1,6 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400,700,800');
+@import url('https://fonts.googleapis.com/css?family=Passion+One');
+
 @import './common/reset.scss';
 @import '/components/home.scss';
 @import '/components/result.scss';
@@ -43,19 +45,27 @@ button {
     color: white;
     font-size: 12px;
     cursor: pointer;
+    -webkit-transition: background 0.3s;
     transition: background 0.3s;
 }
 button {
     text-transform: uppercase;
+    &:hover {
+         color: darken(#95a5a6, 20%);
+         background: white;
+    }
 }
 
 input {
+    border: 2px solid darken(#95a5a6, 30%);
     &::-webkit-input-placeholder {
         color: white;
+        -webkit-transition: color 0.3s;
         transition: color 0.3s;
     }
     &::-moz-placeholder {
         color: white;
+        -webkit-transition: color 0.3s;
         transition: color 0.3s;
     }
     &:focus {
@@ -67,6 +77,6 @@ input {
         }
     }
     &:focus {
-        border: 2px solid orange;
+        border: 2px solid darken(#95a5a6, 40%);
     }
 }

@@ -8,7 +8,7 @@
     min-height: 100%;
     z-index: -1;
     background: darken(#95a5a6, 10%);
-    padding: 100px 30px;
+    padding: 50px 30px;
     counter-reset: item;
     &.show {
         opacity: 1;
@@ -21,18 +21,28 @@
         right: 20px;
     }
     h1 {
+        font-family: 'Passion One', cursive;
+        font-size: 60px;
         margin: 30px auto;
     }
     .leaderboard-item {
         padding: 10px 20px;
+        display: -webkit-box;
+        display: -ms-flexbox;
         display: flex;
-        justify-content: flex-start;
-        align-items: center;
+        -webkit-box-pack: start;
+            -ms-flex-pack: start;
+                justify-content: flex-start;
+        -webkit-box-align: center;
+            -ms-flex-align: center;
+                align-items: center;
         h4 {
             padding: 0 20px;
         }
         p {
-            flex: 1;
+            -webkit-box-flex: 1;
+                -ms-flex: 1;
+                    flex: 1;
             text-align: right;
         }
         &:first-child {
@@ -59,11 +69,13 @@
             position: relative;
         }
         &:after {
-            transform: rotate(45deg);
+            -webkit-transform: rotate(45deg);
+                    transform: rotate(45deg);
             left: -10px;
         }
         &:before {
-            transform: rotate(-45deg);
+            -webkit-transform: rotate(-45deg);
+                    transform: rotate(-45deg);
             left: 10px;
         }
     }

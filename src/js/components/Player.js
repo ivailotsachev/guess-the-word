@@ -26,7 +26,7 @@ class Player {
 
         if (isPlayerLoggedIn) {
             this.container.classList.remove('hide');
-            this.username.innerHTML = `Player: ${userName}`;
+            this.username.innerHTML = `Player: <span class="player-name">${userName}</span>`;
             this.scoreField.innerHTML = `
                 Best Score: <span>${playerTopScore}</span> 
                 Score: <span>${score}</span>`;
