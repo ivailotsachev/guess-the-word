@@ -58,6 +58,7 @@ class App {
 
         closeBtn.addEventListener('click', () => {
             this.props.showLeaderBoard = false;
+            console.error('clicked');
             this.notify();
         })
     }
@@ -101,10 +102,14 @@ class App {
         logOutBtns.forEach(btn => btn.addEventListener('click', () => {
             const dataUsers = JSON.parse(localStorage.getItem('users'));
 
-            this._resetGame();
 
             dataUsers.forEach(user => user.loggedIn = false);
             localStorage.setItem('users', JSON.stringify(dataUsers));
+
+            this._resetGame();
+
+            console.error("LOG OUT");
+            console.table(JSON.parse(localStorage.getItem('users')));
 
             this._logUser();
             this.notify();
@@ -127,102 +132,72 @@ class App {
     _logUser() {
 
         // 1st check for users
-        const users = JSON.parse(localStorage.getItem('users'));
-
         const userNameInput = this.container.querySelector('input.username');
-        let user;
+        let users = JSON.parse(localStorage.getItem('users')) || [];
 
-        // if users exits
-        if (users) {
+        console.warn('_logUSER initial DATA');
+        console.table(users);
 
-            // 1. check for logged in user and log it /refresh browser case /
-            const users = JSON.parse(localStorage.getItem('users'));
-            const loggedInUser = users.filter(user => user.loggedIn === true);
+        const loggedInUserIndex = this._getLoggedInUser(users);
+        console.warn('loggedInUser', loggedInUserIndex);
 
-            if (loggedInUser.length) {
-                const userToLog = this._getLoggedInUser(users);
+        if (loggedInUserIndex !== -1) {
+            console.error('user found - log him')
+            const user = users[loggedInUserIndex];
+            console.error(user);
 
-                this.props.userName = users[userToLog].userName;
-                this.props.isPlayerLoggedIn = true;
-                this.props.playerTopScore = users[userToLog].playerTopScore;
-                this.score = this.gameConfig.score;
+            this.props.isPlayerLoggedIn = true;
+            this.props.userName = user.userName;
+            this.props.playerTopScore = user.playerTopScore;
+            this.props.score = this.gameConfig.score;
 
-                this.notify();
-            } else {
-                userNameInput.addEventListener('keyup', (e) => {
-                    const userName = e.target.value;
-
-                    if (userName && e.keyCode === 13) {
-                        // get username and check data for existing user
-                        const registeredUser = users.filter(user => user.userName === userName);
-                        // if user is already registered log him
-                        if (registeredUser.length) {
-                            const userIndex = this._getUserByName(users, registeredUser[0].userName);
-
-                            // set user loggedIn property to true
-                            const updateUser = users[userIndex];
-                            updateUser.loggedIn = true;
-
-                            this.updateUsersDataBase(users, userIndex, updateUser);
-
-                            // update game
-                            this.props.userName = updateUser.userName;
-                            this.props.playerTopScore = updateUser.playerTopScore;
-                            this.props.isPlayerLoggedIn = true;
-
-                        } else {
-                            // create new user;
-                            user = {
-                                userName,
-                                playerTopScore: this.gameConfig.playerTopScore,
-                                score: this.gameConfig.score,
-                                loggedIn: true
-                            }
-
-                            this.props.isPlayerLoggedIn = true;
-                            this.props.userName = user.userName;
-                            this.props.playerTopScore = user.playerTopScore;
-                            this.props.score = user.score;
-
-                            users.push(user);
-                            localStorage.setItem('users', JSON.stringify(users));
-                        }
-
-                        e.target.value = '';
-                        this.notify();
-                    }
-                })
-            }
-
-
+            this.notify();
+            return;
         } else {
-            const initialUsers = [];
-            // case no user and database users
-            if (!users) {
-                // First case on game init
-                userNameInput.addEventListener('keyup', (e) => {
-                    const userName = e.target.value;
+            console.error('no loggeed in user')
+            userNameInput.addEventListener('keypress', (e) => {
+                const userName = e.target.value;
+                if (userName && e.keyCode === 13) {
+                    // if user exist
+                    let regUserIndex = this._getUserByName(users, userName);
+                    console.error('regUserIndex', regUserIndex);
 
-                    if (userName && e.keyCode === 13) {
-                        user = {
+                    if (regUserIndex !== -1) {
+                        console.error('there is user with same username');
+                        const user = users[regUserIndex];
+
+                        this.props.userName = user.userName;
+                        this.props.playerTopScore = user.playerTopScore;
+                        this.props.score = this.gameConfig.score;
+                        this.props.isPlayerLoggedIn = true;
+
+                        const updateUser = { ...user, loggedIn: true };
+
+                        this.updateUsersDataBase(users, regUserIndex, updateUser);
+                        this.notify();
+
+                    } else {
+                        console.error('no such user -> reg new')
+                        const user = {
                             userName,
                             playerTopScore: this.gameConfig.playerTopScore,
                             score: this.gameConfig.score,
-                            loggedIn: true,
+                            loggedIn: true
                         }
-
-                        initialUsers.push(user);
-                        localStorage.setItem('users', JSON.stringify(initialUsers));
+                        users.push(user);
+                        localStorage.setItem('users', JSON.stringify(users));
 
                         this.props.isPlayerLoggedIn = true;
-                        this.props.userName = userName;
+                        this.props.userName = user.userName;
+                        this.props.playerTopScore = user.playerTopScore;
+                        this.props.score = user.score;
 
-                        e.target.value = ''
                         this.notify();
                     }
-                })
-            }
+                }
+            })
         }
+
     }
 
     generateWord() {
