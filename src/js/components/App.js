@@ -58,7 +58,6 @@ class App {
 
         closeBtn.addEventListener('click', () => {
             this.props.showLeaderBoard = false;
-            console.error('clicked');
             this.notify();
         })
     }
@@ -107,10 +106,6 @@ class App {
             localStorage.setItem('users', JSON.stringify(dataUsers));
 
             this._resetGame();
-
-            console.error("LOG OUT");
-            console.table(JSON.parse(localStorage.getItem('users')));
-
             this._logUser();
             this.notify();
         }));
@@ -135,16 +130,10 @@ class App {
         const userNameInput = this.container.querySelector('input.username');
         let users = JSON.parse(localStorage.getItem('users')) || [];
 
-        console.warn('_logUSER initial DATA');
-        console.table(users);
-
         const loggedInUserIndex = this._getLoggedInUser(users);
-        console.warn('loggedInUser', loggedInUserIndex);
 
         if (loggedInUserIndex !== -1) {
-            console.error('user found - log him')
             const user = users[loggedInUserIndex];
-            console.error(user);
 
             this.props.isPlayerLoggedIn = true;
             this.props.userName = user.userName;
@@ -154,16 +143,13 @@ class App {
             this.notify();
             return;
         } else {
-            console.error('no loggeed in user')
             userNameInput.addEventListener('keypress', (e) => {
                 const userName = e.target.value;
                 if (userName && e.keyCode === 13) {
                     // if user exist
                     let regUserIndex = this._getUserByName(users, userName);
-                    console.error('regUserIndex', regUserIndex);
 
                     if (regUserIndex !== -1) {
-                        console.error('there is user with same username');
                         const user = users[regUserIndex];
 
                         this.props.userName = user.userName;
@@ -177,7 +163,6 @@ class App {
                         this.notify();
 
                     } else {
-                        console.error('no such user -> reg new')
                         const user = {
                             userName,
                             playerTopScore: this.gameConfig.playerTopScore,
